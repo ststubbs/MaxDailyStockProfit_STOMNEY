@@ -83,6 +83,11 @@ public class MaxDailyStockProfitTest
    	 	assertEquals(360, MaxDailyStockProfit.determineMinutesOpen( "10:00", "16:00"));
     } 
     
+    public void test10_maxPriceFirst()
+    {
+    	double[] stock_prices_yesterday =  {5.0, 2.0, 1.0, 4.000, 0.500}; //Test: highest stock price is 1st entry. Expected result: $3.000
+    	assertEquals(3.000, MaxDailyStockProfit.bestProfitTest(stock_prices_yesterday, 5));
+    }
     /**
      * Rigourous Test :-)
      */

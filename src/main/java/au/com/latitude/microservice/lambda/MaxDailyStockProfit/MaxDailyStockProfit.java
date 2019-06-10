@@ -95,16 +95,17 @@ public final class MaxDailyStockProfit {
 	public static void main(String[] args) {
 
 		
-		double[] stock_prices_yesterday =  {400.001, 1500.002, 9200.00, 14000, 23000.003}; //Test: stock price goes up all day. Expected result: $22600.002
-		//double[] stock_prices_yesterday =  {40000.001, 1500.002, 200.00, 14, 3.003}; //Test: stock price goes down all day. Expected result: $0.000
+		//double[] stock_prices_yesterday =  {400.001, 1500.002, 9200.00, 14000, 23000.003}; //Test: stock price goes up all day. Expected result: $22600.002
+		double[] stock_prices_yesterday =  {40000.001, 1500.002, 200.00, 14, 3.003}; //Test: stock price goes down all day. Expected result: $0.000
 		//double[] stock_prices_yesterday =  {400.001, 1500.002, 119200.00, 14000, 23000.003}; //Test: highest stock price is in the middle of the day. Expected result: $118799.999
 		//double[] stock_prices_yesterday =  {400.001, 400.001, 400.001, 400.001, 400.001}; //Test: stock market price did not change all day. Expected result: $0.000
 		//double[] stock_prices_yesterday =  {0.023, 1500.002, 0.023}; //Expected result: $1499.979
 		//double[] stock_prices_yesterday =  {4400.001, 150.002, 9200.003, 4000.000, 23000.003}; //Expected result: $22850.001
 		//double[] stock_prices_yesterday =  {400.001, 1500.002, 1.500, 20.000, 1.003}; //Test: lowest price is last index. Expected result: $1100.001
+		//double[] stock_prices_yesterday =  {5.0, 2.0, 1.0, 4.000, 0.500}; //Test: highest stock price is 1st entry. Expected result: $3.000
 		
 		try {
-			MaxDailyStockProfit bestProfit = new MaxDailyStockProfit(stock_prices_yesterday, "10:00", "10:02");
+			MaxDailyStockProfit bestProfit = new MaxDailyStockProfit(stock_prices_yesterday, "10:00", "11:02");
 			System.out.println( "Transaction Successfully complete: " + bestProfit);
 		}
 		catch (Exception e)
@@ -140,20 +141,23 @@ public final class MaxDailyStockProfit {
 		int arrayPriceIndex = 0; // array index
 		int finalMinimumPriceIndex = 0; // final minimum price index initalise
 		int finalMaximumPriceIndex = 0; // final maximum price index initalise
-		double maximumStockPriceValue = stock_prices_yesterday[0]; 
-		double minimumStockPriceValue = stock_prices_yesterday[0];
+		double maximumStockPriceValue = stock_prices_yesterday[1]; //initial highest value - can't be first entry in array as you must before you sell
+		double minimumStockPriceValue = stock_prices_yesterday[0]; 
 		double[] responseMinAndMaxPriceAndIndex = new double[5]; // array to return results in
 		double bestProfit = 0;
-		
-		minimumStockPriceValue = stock_prices_yesterday[0]; //initial minimum value
-		maximumStockPriceValue = stock_prices_yesterday[0]; //initial highest value
+			
+		System.out.println( "stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " maximumStockPriceValue: " + maximumStockPriceValue );
+		System.out.println( "stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " minimumStockPriceValue: " + minimumStockPriceValue );
 		
 		// loop through array of stock prices. Each index is the stock price for the minute.
 		for ( arrayPriceIndex = 1 ; arrayPriceIndex < arrayLength ; arrayPriceIndex ++ )
 	   	 {
+			System.out.println( "OUTER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " maximumStockPriceValue: " + maximumStockPriceValue );
 			
 	   	    if ( stock_prices_yesterday[arrayPriceIndex ] > maximumStockPriceValue)
 	   	    {
+	   	    	System.out.println( "INNER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " maximumStockPriceValue: " + maximumStockPriceValue );
+				
 	   	    	maximumStockPriceValue = stock_prices_yesterday[arrayPriceIndex ];  // Found a larger max. value
 	   	    	finalMaximumPriceIndex = arrayPriceIndex; // record index number for max. value
 	   	    	LOGGER.info( "Max stock price value: " + maximumStockPriceValue + " Max stock price index: " + finalMaximumPriceIndex);
@@ -161,8 +165,12 @@ public final class MaxDailyStockProfit {
 	   	 }
 		for ( arrayPriceIndex = 1 ; arrayPriceIndex < finalMaximumPriceIndex ; arrayPriceIndex ++ )
 	   	 {
+			System.out.println( "OUTER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " minimumStockPriceValue: " + maximumStockPriceValue );
+			
 	    	if ( stock_prices_yesterday[arrayPriceIndex] < minimumStockPriceValue )
 	    	{
+	    		System.out.println( "INNER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " minimumStockPriceValue: " + maximumStockPriceValue );
+				
 	    		minimumStockPriceValue = stock_prices_yesterday[arrayPriceIndex ];  // Found a smaller min. value
 	    		finalMinimumPriceIndex = arrayPriceIndex; // record index number for min. value	
 	    		LOGGER.info( "Min stock price value: " + minimumStockPriceValue + " Min stock price index: " + finalMinimumPriceIndex);
@@ -170,6 +178,10 @@ public final class MaxDailyStockProfit {
 	   	 }
 		LOGGER.info( "Determining best profit... " );
     	bestProfit = maximumStockPriceValue - minimumStockPriceValue;
+    	if ( bestProfit < 0 )
+    	{
+    		bestProfit = 0; //If the stock price goes down all day then the bestProfit could end up being a negative number
+    	}
     	LOGGER.info( "BEST PROFIT IS: " + bestProfit);
     	
 		LOGGER.severe( "MaximumIndex: " + finalMaximumPriceIndex );
