@@ -145,32 +145,21 @@ public final class MaxDailyStockProfit {
 		double minimumStockPriceValue = stock_prices_yesterday[0]; 
 		double[] responseMinAndMaxPriceAndIndex = new double[5]; // array to return results in
 		double bestProfit = 0;
-			
-		System.out.println( "stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " maximumStockPriceValue: " + maximumStockPriceValue );
-		System.out.println( "stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " minimumStockPriceValue: " + minimumStockPriceValue );
-		
+				
 		// loop through array of stock prices. Each index is the stock price for the minute.
 		for ( arrayPriceIndex = 1 ; arrayPriceIndex < arrayLength ; arrayPriceIndex ++ )
 	   	 {
-			System.out.println( "OUTER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " maximumStockPriceValue: " + maximumStockPriceValue );
-			
 	   	    if ( stock_prices_yesterday[arrayPriceIndex ] > maximumStockPriceValue)
 	   	    {
-	   	    	System.out.println( "INNER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " maximumStockPriceValue: " + maximumStockPriceValue );
-				
 	   	    	maximumStockPriceValue = stock_prices_yesterday[arrayPriceIndex ];  // Found a larger max. value
 	   	    	finalMaximumPriceIndex = arrayPriceIndex; // record index number for max. value
 	   	    	LOGGER.info( "Max stock price value: " + maximumStockPriceValue + " Max stock price index: " + finalMaximumPriceIndex);
 	   	    }
 	   	 }
 		for ( arrayPriceIndex = 1 ; arrayPriceIndex < finalMaximumPriceIndex ; arrayPriceIndex ++ )
-	   	 {
-			System.out.println( "OUTER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " minimumStockPriceValue: " + maximumStockPriceValue );
-			
+	   	 {	
 	    	if ( stock_prices_yesterday[arrayPriceIndex] < minimumStockPriceValue )
 	    	{
-	    		System.out.println( "INNER stock price: " + stock_prices_yesterday[arrayPriceIndex ] + " minimumStockPriceValue: " + maximumStockPriceValue );
-				
 	    		minimumStockPriceValue = stock_prices_yesterday[arrayPriceIndex ];  // Found a smaller min. value
 	    		finalMinimumPriceIndex = arrayPriceIndex; // record index number for min. value	
 	    		LOGGER.info( "Min stock price value: " + minimumStockPriceValue + " Min stock price index: " + finalMinimumPriceIndex);
